@@ -1,0 +1,8 @@
+*/vendor/*
+Gopkg.lock
+pkg/
+.svn/
+.idea/
+node_modules/
+vendor/
+db/

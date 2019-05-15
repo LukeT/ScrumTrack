@@ -1,0 +1,121 @@
+:global {
+	@import '~@streamjar/ui-shared/styles/ui';
+	@import '~@streamjar/ui-shared/styles/components/ripple/ripple';
+	@import '~@streamjar/ui-shared/styles/theme';
+	@import '~@streamjar/ui-shared/styles/flex';
+	@import "~react-vis/dist/style";
+
+	$theme: (
+		gradient: linear-gradient(to bottom right, #2D3B88 0%, #2B387F 100%),
+		primary: #2D3B88,
+    );
+
+	.jar-select {
+		> .jar-select__items {
+			flex-wrap: wrap;
+		}
+	}
+	@include jar-theme($theme);
+
+	@media (min-width: 1200px) {
+		.hide-lg {
+			display: none;
+		}
+
+		@include jar-flex-layout("-lg");
+	}
+
+	.quill {
+		border: 1px solid #313b8b;
+		border-radius: 4px;
+		margin: 10px 5px;
+	}
+
+	.ql-snow {
+		.ql-tooltip {
+			background: map-get($theme, primary);
+		}
+
+
+		.ql-picker-item:hover {
+			color: lighten(map-get($theme, primary), 10%) !important;
+		}
+		.ql-active {
+			color: lighten(map-get($theme, primary), 10%) !important;
+
+			.ql-fill {
+				fill: lighten(map-get($theme, primary), 10%) !important;
+			}
+
+			.ql-stroke {
+				stroke: lighten(map-get($theme, primary), 10%) !important;
+			}
+		}
+	}
+
+	.jar-popup .jar-popup__container {
+		background: map-get($theme, gradient);
+
+		.jar-input {
+			border-color: rgba(#FFF, .15);
+		}
+	}
+
+	h5 {
+		font-size: 16px;
+		font-weight: bold;
+	}
+
+	p {
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+
+	@media #{map-get($breakpoints, xs)} {
+		.hide-mobile {
+			display: none;
+		}
+	}
+}
+
+
+.card {
+	padding: 15px;
+
+	> div {
+		background: #292929;
+		border-radius: 4px;
+		padding: 15px;
+	}
+}
+
+
+a[href] {
+	text-decoration: none !important;
+}
+
+.Difference {
+	color: #eee !important;
+	padding: 5px;
+
+	span {
+		opacity: 0.5;
+	}
+
+	del {
+		background: #622 !important;
+		padding: 2px 1px;
+	}
+
+	ins {
+		color: #bfff9e;
+	}
+}
+
+
+.rv-discrete-color-legend-item__title {
+	color: #FFF;
+	font-weight: bold;
+	opacity: 0.5;
+}

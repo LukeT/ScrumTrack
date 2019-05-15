@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package ticket.svc.history;
+
+import "common.proto";
+
+message LogItem {
+	int32 id = 1;
+
+	string projectCode = 8;
+	int32 ticketId = 2;
+	int32 sprintId = 3;
+
+	.ticket.common.LogType type = 4;
+	string old = 5;
+	string new = 6;
+
+	bool internal = 9;
+	int64 createdAt = 7;
+}
+
+message LogSprint {
+	string projectCode = 1;
+	int32 sprintId = 2;
+	int64 from = 3;
+	int64 to = 4;
+}
+
+message LogTicket {
+	string projectCode = 1;
+	int32 ticketId = 2;
+}
+
+message LogsResponse {
+	repeated LogItem logs = 1;
+	.ticket.common.Error error = 2;
+}
+message LogResponse {
+	LogItem log = 1;
+	.ticket.common.Error error = 2;
+}
+
+service History {
+	rpc GetBySprint(LogSprint) returns (LogsResponse);
+	rpc GetByTicket(LogTicket) returns (LogsResponse);
+	rpc Log(LogItem) returns (LogResponse);
+}

@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package ticket.svc.ticket;
+
+import "common.proto";
+
+message GetAllRequest {
+	string projectSC = 1;
+
+	LocationType locationType = 2;
+	repeated .ticket.common.TicketStatus status = 3;
+	int32 sprintId = 4;
+	int32 workflowId = 5;
+}
+
+message GetRequest {
+	string projectSC = 1;
+	int32 ticketId = 2;
+}
+
+enum LocationType {
+	backlog = 0;
+	sprint = 1;
+	pending = 2;
+}
+
+message TicketsListResponse {
+	repeated Ticket tickets = 1;
+	.ticket.common.Error error = 2;
+}
+
+message TicketResponse {
+	Ticket ticket = 1;
+	.ticket.common.Error error = 2;
+}
+
+
+
+message Ticket {
+	int32 id = 1;
+	string projectCode = 9;
+
+	string title = 2;
+	string body = 3;
+	int32 weight = 14;
+
+	LocationType locationType = 4;
+	int32 sprintId = 5;
+	int32 previousTicket = 6;
+
+	int32 workflowId = 12;
+	int32 workflowPosition = 13;
+
+	int32 creatorUserId = 10;
+	int32 assigneeUserId = 11;
+
+	int64 createdAt = 7;
+	int64 updatedAt = 8;
+
+	string category = 16;
+
+	.ticket.common.TicketStatus status = 15;
+}
+
+message TicketComment {
+	int32 id = 1;
+	string projectCode = 2;
+	int32 ticketId = 3;
+	string body = 4;
+	int32 userId = 5;
+}
+
+message CommentResponse {
+	TicketComment comment = 1;
+	.ticket.common.Error error = 2;
+}
+
+message MoveRequest {
+	string projectCode = 1;
+	int32 ticketId = 2;
+
+	int32 previousTicket = 3;
+	int32 sprintId = 4;
+}
+
+message MoveWithinSprintRequest {
+	string projectCode = 1;
+	int32 ticketId = 2;
+
+	int32 workflowId = 3; // Workflow ID
+	int32 order = 4; // Order within workflow.
+}
+
+message CommentsListResponse {
+	repeated TicketComment comments = 1;
+	.ticket.common.Error error = 2;
+}
+
+message Category {
+	string name = 1;
+	int32 count = 2;
+}
+
+message Categories {
+	repeated Category categories = 1;
+}
+
+service Tickets {
+	rpc GetAll(GetAllRequest) returns (TicketsListResponse);
+
+	rpc Get(GetRequest) returns (TicketResponse);
+	rpc Create(Ticket) returns (TicketResponse);
+	rpc Update(Ticket) returns (TicketResponse);
+	rpc Move(MoveRequest) returns (.ticket.common.Status);
+
+	rpc MoveWithinSprint(MoveWithinSprintRequest) returns (.ticket.common.Status);
+
+	rpc GetComments(GetRequest) returns (CommentsListResponse);
+	rpc CreateComment(TicketComment) returns (CommentResponse);
+
+	rpc GetCategories(GetAllRequest) returns (Categories);
+}

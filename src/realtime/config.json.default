@@ -1,0 +1,12 @@
+{
+	"consul": {
+		"hostname": "127.0.0.1",
+		"port": 8085
+	},
+	"minimumVotes": 2,
+	"voteTimeframe": 15000,
+	"web": {
+		"hostname": "127.0.0.1",
+		"port": 8085
+	}
+}

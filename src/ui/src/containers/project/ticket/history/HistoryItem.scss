@@ -1,0 +1,31 @@
+.history {
+	padding: 10px 20px;
+	border-radius: 5px;
+	background: #1d1d1d8c;
+	margin-top: 10px;
+}
+
+
+.weight {
+	display: inline-block;
+	font-display: bold;
+	font-size: 14px;
+	padding: 3px 8px;
+    border-radius: 50%;
+	background: rgba(#FFF, 0.2);
+}
+
+.sprint {
+	border-radius: 4px;
+	padding: 5px 7.5px;
+	font-weight: bold;
+	font-size: 12px;
+	text-transform: uppercase;
+	display: inline;
+	background: rgba(#FFF, 0.2);
+}
+
+.ago {
+	color: #FFF;
+	opacity: 0.1;
+}

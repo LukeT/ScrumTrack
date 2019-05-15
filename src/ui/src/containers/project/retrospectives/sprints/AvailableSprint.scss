@@ -1,0 +1,17 @@
+.sprint {
+	padding: 10px 15px;
+	color: #FFF;
+	margin-top: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+	position: relative;
+
+	&:hover {
+		background: rgba(#FFF, 0.1);
+	}
+
+	&__date {
+		opacity: 0.5;
+		padding-top: 10px;
+	}
+}

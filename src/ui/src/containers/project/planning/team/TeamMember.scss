@@ -1,0 +1,45 @@
+.teamMember {
+	padding: 5px 5px;
+	position: relative;
+	border-radius: 4px;
+
+	&:hover {
+		background: rgba(#FFF, 0.1);
+	}
+
+	&__offline {
+		filter: grayscale(100%);
+		opacity: .4;
+	}
+
+	&__name {
+		padding-left: 15px;
+	}
+
+	&__hasVoted {
+		color: #FFF;
+
+		p {
+			font-weight: bold;
+			text-transform: uppercase;
+			padding-left: 5px;
+		}
+	}
+}
+
+.onlineIcon {
+	width: 12px;
+    height: 12px;
+    background: rgba(75, 156, 33, 0.75);
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    border-radius: 50%;
+	border: 1px solid rgba(255, 255, 255, 0.5)
+}
+
+.voted {
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 10px;
+}

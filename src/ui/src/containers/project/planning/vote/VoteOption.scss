@@ -1,0 +1,40 @@
+.voteOption {
+	width: 125px;
+	margin: 15px;
+	height: 175px;
+	line-height: 175px;
+	text-align: center;
+	border: 8px solid rgba(#FFF, 0.1);
+	border-radius: 4px;
+	font-weight: bold;
+	text-align: center;
+	color: #FFF;
+	font-size: 20px;
+	cursor: pointer;
+
+	&:hover {
+		background: lighten(#2D3B88, 10%);
+	}
+
+	&.voteOption-selected {
+		background: #FFF;
+		background: darken(#FFF, 5%);
+		color: #2d3b77;
+	}
+
+	&--sm {
+		width: 90px;
+		height: 134px;
+		line-height: 134px;
+		border-width: 5px;
+		margin: 15px;
+	}
+
+	&--xs {
+		width: 76px;
+		height: 112px;
+		line-height: 112px;
+		border-width: 5px;
+		margin: 15px;
+	}
+}

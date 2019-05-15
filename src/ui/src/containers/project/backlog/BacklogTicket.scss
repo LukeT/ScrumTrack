@@ -1,0 +1,35 @@
+.ticket {
+	color: #FFF;
+	border-bottom: 1px solid rgba(#FFF, .1);
+	padding: 6px 3px;
+	font-size: 12px;
+	cursor: pointer;
+	background: transparent;
+	transition: 50ms ease-in-out;
+	text-decoration: none;
+
+
+	&__weighting {
+		padding: 3px 8px;
+		margin-right: 10px;
+		border-radius: 50%;
+		color: #FFF;
+		background: rgba(#FFF, .15);
+	}
+
+	&:hover {
+		background: rgba(#2D3B88, .6)
+	}
+
+	strong {
+		padding: 2px 10px 2px 3px;
+		color: #5c6ac1;
+		font-size: 12px;
+	}
+
+	&__name {
+		text-transform: uppercase;
+		font-weight: 600;
+		padding-left: 5px;
+	}
+}

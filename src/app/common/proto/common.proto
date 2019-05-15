@@ -1,0 +1,36 @@
+ syntax = "proto3";
+
+package ticket.common;
+
+option go_package = "app/common/proto";
+
+message Error {
+	string error = 1;
+}
+
+message VoidResponse {
+	Error error = 1;
+}
+
+message Status {
+	bool Status = 1;
+}
+
+
+enum TicketStatus {
+	Open = 0;
+	InProgress = 1;
+	Closed = 2;
+}
+
+enum LogType {
+	SPRINT_CHANGED = 0;
+	TITLE_CHANGED = 1;
+	ASSIGNEE_CHANGED = 2;
+	WEIGHT_CHANGED = 3;
+	LOCATION_CHANGED = 4;
+	STATUS_CHANGED = 5;
+	REPRIORITISED = 6;
+}
+
+message Empty {}

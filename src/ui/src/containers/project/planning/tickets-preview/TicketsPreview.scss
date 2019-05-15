@@ -1,0 +1,36 @@
+.ticket {
+	background: darken(#2D3B88, 5%);
+	margin: 3px 0px;
+	padding: 7.5px;
+	border-radius: 4px;
+
+	&__weighting {
+		padding: 3px 8px;
+		margin-right: 10px;
+		border-radius: 50%;
+		color: #FFF;
+		background: rgba(#FFF, .15);
+	}
+
+	&__active {
+		background: #FFF;
+
+		> div {
+			color: #2D3B88;
+		}
+	}
+
+	&__id {
+		opacity: .5;
+		color: #FFF;
+		font-weight: bold;
+		margin-right: 7.5px;
+		font-size: 13px;
+	}
+
+	&__title {
+		color: #FFF;
+		font-display: bold;
+		font-size: 13px;
+	}
+}

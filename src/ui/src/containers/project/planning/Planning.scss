@@ -1,0 +1,38 @@
+@import '~@streamjar/ui-shared/styles/flex';
+
+.planningOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 25px;
+	background: darken(#2D3B88, 10%);
+	z-index: 99999;
+
+	@media #{map-get($breakpoints, xs)} {
+		padding: 10px;
+	}
+
+	&__header {
+		border-bottom: 1px solid rgba(#FFF, .1);
+		margin-bottom: 15px;
+	}
+}
+
+.planningInner {
+	width: 100%;
+	margin: 0 auto;
+	height: 100%;
+}
+
+.mobileSidebar {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	z-index: 1000;
+	max-width: 350px;
+	background: darken(#2D3B88, 10%);
+}

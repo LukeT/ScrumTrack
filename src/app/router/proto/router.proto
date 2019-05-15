@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ticket.router;
+
+message Request {
+	string method = 1; // HTTP Method
+	string path = 2; // HTTP Path
+	map<string, string> headers = 3; // HTTP Headers
+	map<string, string> params = 4; // HTTP Query Params
+
+	string body = 5; // Body
+}
+
+message Response {
+	int32 status = 1; /// Response Status
+	map<string, string> headers = 2; // Response Headers
+
+	string body = 3; // Response
+	string error = 4; // Response
+}
+
+service Router {
+	rpc Call(Request) returns (Response) {}
+}

@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+
+enum ResultAction {
+	CONTINUE = 1;
+
+	AVERAGE = 2;
+	STRIP_OUTLIER = 3;
+	REVOTE = 4;
+
+	SKIP = 5;
+}
+
+
+// CLIENT -> Authenticate with the server
+message Authenticate {
+	string jwt = 1;
+}
+
+// CLIENT -> Create a new planning session
+message BeginPlanningSession {
+	string project = 1;
+}
+
+// CLIENT -> Participate in an existent planning session
+message ParticipatePlanningSession {
+	bool inSession = 1;
+	string project = 2;
+}
+
+// CLIENT -> Vote on a ticket
+message Vote {
+	int32 weight = 1;
+	int32 ticketId = 2;
+}
+
+// CLIENT -> Handle an action on the current ticket.
+message CastAction {
+	ResultAction action = 1;
+}
+
+// SERVER -> The user is authenticated
+message Authenticated {
+	bool status = 1;
+	string message = 2;
+}
+
+// SERVER -> User online/offline statuses
+message UserStatus {
+	bool status = 1;
+	int32 userId = 2;
+}
+
+// SERVER -> A planning session has been created that the user can join.
+message PlanSessionActive {
+	string project = 1;
+}
+
+// SERVER -> A planning session has been destroyed
+message PlanSessionInactive {
+	string project = 1;
+}
+
+// SERVER -> Information about a session the user is in
+message Session {
+	string project = 1;
+	int32 leader = 2;
+	repeated int32 online = 3;
+	int32 ticketId = 4;
+	repeated int32 voted = 5;
+	int32 myVote = 6;
+}
+
+// SERVER -> The current user has left a session
+message LeftSession {
+	string project = 1;
+}
+
+// SERVER - A given user has voted
+message Voted {
+	int32 userId = 1;
+}
+
+// SERVER - Inform clients a ticket was weighted.
+message Weighted {
+	string ticketId = 1;
+	int32 weight = 2;
+}
+
+// SERVER -> We have chosen a new ticket
+message NewTicket {
+	int32 ticketId = 1;
+}
+
+// ENUM -> Reasons the countdown has changed
+enum CountdownReason {
+	NOT_ENOUGH = 1; // not enough votes
+	NEW_TICKET = 2; // a new ticket loaded
+	LOAD = 3; // page load
+}
+
+// SERVER -> Send when the countdown is updated.
+message Countdown {
+	int32 durationMs = 1;
+	CountdownReason reason = 2;
+}
+
+// ENUM -> Reasons the session can end
+enum EndSessionReason {
+	ADMIN_DONE = 1;
+	NO_MORE = 2;
+}
+
+// SERVER -> Emitted when a session is now inactive.
+message EndSession {
+	EndSessionReason reason = 1;
+}
+
+// Results for a single weight
+message ResultWeight {
+	int32 weight = 1; // The weight we're representing
+	bool isOutlier = 2; // Whether this is a possible outlier
+	bool preferred = 3; // Whether this is the prefered weight
+	bool isMedian = 4;
+	repeated int32 voters = 5; // All voters
+}
+
+// All weights for a voting round
+message ResultSet {
+	repeated ResultWeight weights = 1;
+}
+
+// SERVER -> The available results for the last round.
+message Results {
+	bool isFinal = 1;
+	repeated ResultAction options = 2;
+
+	ResultSet current = 3; // Votes for the current session
+	ResultSet previous = 4; // Votes for the last round if possible
+}

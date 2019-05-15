@@ -1,0 +1,42 @@
+.sprintColumnContainer {
+	padding: 7.5px;
+	flex-shrink: 0 !important;
+}
+
+.sprintColumn {
+	background: #272727;
+	border-radius: 4px;
+	opacity: 1;
+	transition: opacity,border-color ease-in 100ms;
+	height: 100%;
+
+	border: 2px solid transparent;
+	position: relative;
+
+	&__active {
+		border-color: #2d3b88;
+	}
+
+	&__untargetable {
+		transition: opacity ease-in 200ms;
+		opacity: .2;
+		filter: grayscale(100%);
+	}
+
+	&__editing {
+		.columnContainer {
+			filter: blur(4px);
+			opacity: 0.4;
+			pointer-events: none;
+		}
+	}
+
+	&__bad {
+		border-color: lighten(#882d2d, 5%);
+	}
+}
+
+.columnContainer {
+	height: calc(100% - 40px);
+	padding: 5px 10px 5px;
+}

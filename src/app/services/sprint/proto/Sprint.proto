@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package ticket.svc.sprint;
+
+message SprintById {
+	int32 id = 1;
+}
+
+message SprintByProject {
+	string projectId = 1;
+}
+
+message Sprint {
+	int32 id  = 1;
+	string name = 2;
+	int32 duration = 3;
+	int64 startedAt = 4;
+	int64 endAt = 5;
+	string projectCode = 6;
+}
+
+message SprintResponse {
+	Sprint sprint = 1;
+	.ticket.common.Error error = 2;
+}
+
+message SprintsResponse {
+	repeated Sprint sprints = 1;
+	.ticket.common.Error error = 2;
+}
+
+message SprintComment {
+	int32 id = 1;
+	int32 authorId = 2;
+	string projectCode = 8;
+	string type = 3;
+	string message = 4;
+	int64 createdAt = 5;
+	int32 sprintId = 6;
+	int32 resolvedId = 7;
+}
+
+message SprintCommentResponse {
+	SprintComment comment = 1;
+	.ticket.common.Error error = 2;
+}
+
+message SprintCommentsResponse {
+	repeated SprintComment comments = 1;
+	.ticket.common.Error error = 2;
+}
+
+message SprintCommentId {
+	int32 id = 1;
+	string project = 2;
+}
+
+message SprintCommentIdWithSprint {
+	int32 id = 1;
+	string project = 2;
+	int32 sprintId = 3;
+}
+
+message SprintIdAndProject {
+	int32 sprintId = 1;
+	string project = 2;
+}
+
+service Sprints {
+	rpc GetActiveSprint(SprintByProject) returns (SprintResponse);
+	rpc GetHistoricSprints(SprintByProject) returns (SprintsResponse);
+	rpc GetById(SprintById) returns (SprintResponse);
+	rpc Create(Sprint) returns (SprintResponse);
+	rpc Update(Sprint) returns (SprintResponse);
+
+	rpc GetComments(SprintIdAndProject) returns (SprintCommentsResponse);
+	rpc PastComments(SprintIdAndProject) returns (SprintCommentsResponse);
+
+	rpc AddComment(SprintComment) returns (SprintCommentResponse);
+	rpc DeleteComment(SprintCommentId) returns (.ticket.common.Status);
+	rpc ResolveComment(SprintCommentIdWithSprint) returns (.ticket.common.Status);
+
+}

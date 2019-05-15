@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package ticket.svc.user;
+
+message Id {
+	int32 id = 1;
+}
+
+message Username {
+	string username = 1;
+}
+
+message Email {
+	string email = 1;
+}
+
+message UserPassword {
+	int32 id = 1;
+	string password = 2;
+}
+
+message AuthUser {
+	int32 id = 1;
+	string username = 2;
+	string password = 3;
+	string email = 4;
+	string first_name = 5;
+	string last_name = 6;
+	string role = 7;
+	bool active = 8;
+	bool disabled = 9;
+	string reset_token = 10;
+}
+
+message UserList {
+	repeated AuthUser users = 1;
+}
+
+message UserResponse {
+	ticket.common.Error error = 1;
+	AuthUser user = 2;
+}
+
+message PasswordCheck {
+	int32 userId = 1;
+	string password = 2;
+}
+
+service User {
+	rpc GetById(Id) returns (AuthUser);
+	rpc GetByUsername(Username) returns (AuthUser);
+	rpc GetByEmail(Email) returns (AuthUser);
+	rpc GetAll(ticket.common.Empty) returns (UserList);
+
+	rpc CheckPassword(PasswordCheck) returns (ticket.common.Status);
+
+	rpc Create(AuthUser) returns (Id);
+	rpc Update(AuthUser) returns (UserResponse);
+	rpc Delete(Id) returns (ticket.common.VoidResponse);
+}

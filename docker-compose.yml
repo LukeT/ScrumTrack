@@ -1,0 +1,316 @@
+version: '3'
+
+services:
+    # https://stackoverflow.com/questions/43322033/create-database-on-docker-compose-startup
+    db:
+        image: mysql:5.7
+        restart: always
+        command: --init-file /init.sql
+        expose:
+          - 3306
+          - 33060
+        ports:
+          - 3309:3306
+        volumes:
+          - ./src/app/default.sql:/init.sql
+          - ./db:/var/lib/mysql
+        logging:
+            driver: none
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: uni
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+
+    # Consul Service Discovery
+    consul:
+        image: consul:latest
+        logging:
+            driver: none
+        ports:
+          - 8500:8500
+        command: "agent -dev -ui -client 0.0.0.0"
+
+    # UI
+    ui:
+        expose:
+            - 8082
+        ports:
+          - 8082:8082
+        build:
+            context: src/ui
+        volumes:
+          - ./src/ui:/usr/src/app
+          - /usr/src/app/node_modules
+
+    realtime:
+        expose:
+            - 8090
+        ports:
+          - 8090:8090
+        build:
+            context: src/realtime
+        volumes:
+          - ./src/realtime:/usr/src/app
+          - /usr/src/app/node_modules
+
+
+    # Router Proxy Service (ticket.router)
+    router:
+        expose:
+            - 9090
+        command: "CompileDaemon -build=\"go build -o /go/bin/router ./router\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/router -port 9090 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        ports:
+          - 8080:8080
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_admin_user:
+        expose:
+            - 9091
+        ports:
+            - 9091:9091
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-admin-user ./api/admin/user\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-admin-user -port 9091 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_admin_workflow:
+        expose:
+            - 9092
+        ports:
+            - 9092:9092
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-admin-workflow ./api/admin/workflow\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-admin-workflow -port 9092 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_auth:
+        expose:
+            - 9093
+        ports:
+            - 9093:9093
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-auth ./api/auth\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-auth -port 9093 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_project:
+        expose:
+            - 9094
+        ports:
+            - 9094:9094
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-project ./api/project\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-project -port 9094 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_sprint:
+        expose:
+            - 9095
+        ports:
+            - 9095:9095
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-sprint ./api/sprint\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-sprint -port 9095 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_ticket:
+        expose:
+            - 9096
+        ports:
+            - 9096:9096
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-ticket ./api/ticket\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-ticket -port 9096 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_user:
+        expose:
+            - 9097
+        ports:
+            - 9097:9097
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-user ./api/user\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-user -port 9097 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    api_workflow:
+        expose:
+            - 9098
+        ports:
+            - 9098:9098
+        command: "CompileDaemon -build=\"go build -o /go/bin/api-workflow ./api/workflow\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/api-workflow -port 9098 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+
+    svc_auth:
+        expose:
+            - 9190
+        ports:
+            - 9190:9190
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-auth ./services/auth\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-auth -port 9190 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    svc_mail:
+        expose:
+            - 9191
+        ports:
+            - 9191:9191
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-mail ./services/mail\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-mail -port 9191 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    svc_project:
+        expose:
+            - 9192
+        ports:
+            - 9192:9192
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-project ./services/project\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-project -port 9192 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    svc_sprint:
+        expose:
+            - 9193
+        ports:
+            - 9193:9193
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-sprint ./services/sprint\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-sprint -port 9193 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    svc_ticket:
+        expose:
+            - 9194
+        ports:
+            - 9194:9194
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-ticket ./services/ticket\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-ticket -port 9194 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    svc_user:
+        expose:
+            - 9195
+        ports:
+            - 9195:9195
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-user ./services/user\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-user -port 9195 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+    svc_workflow:
+        expose:
+            - 9196
+        ports:
+            - 9196:9196
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-workflow ./services/workflow\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-workflow -port 9196 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+
+
+    svc_history:
+        expose:
+            - 9197
+        ports:
+            - 9197:9197
+        command: "CompileDaemon -build=\"go build -o /go/bin/svc-history ./services/history\" -command=\"./wait-for-it.sh db:3306 -- /go/bin/svc-history -port 9197 -consul consul:8500 -db-host db -db-port 3306 -external-ip host.docker.internal \""
+        depends_on:
+            - db
+            - consul
+        build:
+            context: src/app
+        volumes:
+          - ./src/app:/go/src/app
+          - /go/src/app/vendor
+volumes:
+    db_data: {}

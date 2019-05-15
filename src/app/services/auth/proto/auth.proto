@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package ticket.svc.auth;
+
+message SessionState {
+	int32 userId = 1;
+	string role = 2;
+}
+
+message Session {
+	string token = 1;
+}
+
+message Status {
+	bool status = 1;
+}
+
+service Auth {
+	rpc Create(SessionState) returns (Session);
+	rpc Validate(Session) returns (SessionState);
+	rpc Destroy(Session) returns (Status);
+}

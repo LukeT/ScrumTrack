@@ -1,0 +1,17 @@
+.sidebar {
+	background: #292929;
+	padding: 20px 10px;
+	width: 400px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+
+	> h5 {
+		padding: 0px 10px;
+	}
+}
+
+.noSprints {
+	text-align: center;
+	line-height: 120px;
+	opacity: 0.5;
+}

@@ -1,0 +1,44 @@
+.commentBlock {
+	margin: 15px;
+	border-radius: 5px;
+	overflow: hidden;
+	background: #292929;
+	&--good {
+		.commentHeader {
+			background-color: #3f9f2d;
+		}
+	}
+
+	&--bad {
+		.commentHeader {
+			background-color: #d1292a;
+		}
+	}
+}
+
+.commentHeader {
+	padding: 2.5px 15px;
+}
+
+.comments {
+	padding: 10px 25px;
+
+	&__alt {
+		border: 1px solid rgba(#FFF, 0.2);
+		border-radius: 5px;
+		padding: 10px 15px 15px;
+		margin: 10px;
+		margin-bottom: 0;
+
+		> p {
+			padding: 0px 0 10px;
+			text-transform: uppercase;
+			opacity: 0.5;
+			font-weight: bold;
+		}
+	}
+
+	> p {
+		opacity: 0.5;
+	}
+}

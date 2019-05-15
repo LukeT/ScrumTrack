@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package ticket.svc.workflow;
+
+message WorkflowConfiguration {
+	uint32 id = 1;
+	string name = 2;
+	uint32 maxItems = 3;
+	uint32 order = 4;
+	repeated uint32 allow = 5;
+	.ticket.common.TicketStatus status = 6;
+}
+
+message WorkflowId {
+	int32 workflowId = 1;
+}
+
+message WorkflowConfigurations {
+	repeated WorkflowConfiguration workflows = 1;
+	.ticket.common.Error error = 2;
+}
+
+message WorkflowConfigurationResponse {
+	WorkflowConfiguration workflow = 1;
+	.ticket.common.Error error = 2;
+}
+
+message InitialColumn {
+	int32 workflowId = 1;
+}
+
+service Workflow {
+	rpc Get(ticket.common.Empty) returns (WorkflowConfigurations);
+	rpc GetOne(WorkflowId) returns (WorkflowConfigurationResponse);
+	rpc Create(WorkflowConfiguration) returns (WorkflowConfigurationResponse);
+	rpc Update(WorkflowConfiguration) returns (WorkflowConfigurationResponse);
+	rpc Delete(WorkflowId) returns (ticket.common.VoidResponse);
+
+	rpc GetInitialColumn(ticket.common.Empty) returns (InitialColumn);
+}

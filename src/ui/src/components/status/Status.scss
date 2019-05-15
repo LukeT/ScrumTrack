@@ -1,0 +1,21 @@
+.status {
+	border-radius: 3px;
+	padding: 5px 7.5px;
+	font-weight: bold;
+	font-size: 12px;
+	text-transform: uppercase;
+	display: inline;
+	color: #FFf;
+
+	&--open {
+		background-color: #3f9f2d;
+	}
+
+	&--in-progress {
+		background-color: #2d3b9f;
+	}
+
+	&--closed {
+		background-color: #d1292a;
+	}
+}
