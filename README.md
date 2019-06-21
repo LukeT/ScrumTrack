@@ -1,6 +1,10 @@
 # Scrum Project Management
+This project is issue-tracking software oriented around the SCRUM software development process. It was built as a BSc Computer sciene project at the University of Leicester (2018-2019)
 
-This codebase is comprised of three core applications, each has information on installation and usage. 
+This codebase is comprised of three core applications, each has information on installation and usage in the appropiate README.
+
+- [Dissertation](/Dissertation.pdf)
+- [Presentation](/Presentation.pdf)
 
 # Running project
 This project provides a docker-compose configuration, which defines all of the services, web interfaces and dependencies. You may also run each of the services in your local machine, each codebase provides deeper instructions on this.
